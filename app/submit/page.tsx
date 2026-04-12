@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ShieldCheck, UploadCloud, Check } from "lucide-react";
 import Link from "next/link";
@@ -17,8 +18,10 @@ const stagger = {
 };
 
 export default function SubmitPage() {
+  const router = useRouter();
   const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
   const [form, setForm] = useState({
     college: "",
@@ -31,6 +34,16 @@ export default function SubmitPage() {
     title: "",
     offerType: "on-campus",
   });
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) {
+        router.replace("/login");
+      } else {
+        setAuthChecked(true);
+      }
+    });
+  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -70,6 +83,16 @@ export default function SubmitPage() {
     setSubmitted(true);
   };
 
+  if (!authChecked) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+          Verifying identity...
+        </p>
+      </main>
+    );
+  }
+
   if (submitted) {
     return (
       <main className="min-h-screen flex items-center justify-center px-6">
@@ -96,14 +119,7 @@ export default function SubmitPage() {
   return (
     <main className="pt-44 pb-32 relative z-10">
       <div className="max-w-4xl mx-auto px-6">
-
-        {/* Header */}
-        <motion.header
-          initial="hidden"
-          animate="visible"
-          variants={stagger}
-          className="mb-12"
-        >
+        <motion.header initial="hidden" animate="visible" variants={stagger} className="mb-12">
           <motion.div variants={fadeUp} className="flex items-center gap-3 mb-4">
             <ShieldCheck className="w-5 h-5 text-slate-500" />
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Secure End-to-End Submission</span>
@@ -116,7 +132,6 @@ export default function SubmitPage() {
           </motion.p>
         </motion.header>
 
-        {/* Step Indicator */}
         <div className="flex items-center gap-8 mb-12 border-b border-white/5">
           {["Context", "Package", "Verification"].map((step, i) => (
             <div key={step} className={`pb-4 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 ${i === 0 ? "text-white border-b-2 border-white" : "text-slate-600"}`}>
@@ -129,32 +144,15 @@ export default function SubmitPage() {
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-8 space-y-12">
-
-              {/* Step 1: Context */}
               <section className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Institution Name</label>
-                    <input
-                      type="text"
-                      name="college"
-                      value={form.college}
-                      onChange={handleChange}
-                      placeholder="e.g. NIT Trichy"
-                      required
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none"
-                    />
+                    <input type="text" name="college" value={form.college} onChange={handleChange} placeholder="e.g. NIT Trichy" required className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Academic Branch</label>
-                    <select
-                      name="branch"
-                      value={form.branch}
-                      onChange={handleChange}
-                      required
-                      title="Select your academic branch"
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none"
-                    >
+                    <select name="branch" value={form.branch} onChange={handleChange} required className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
                       <option value="">Select Branch</option>
                       <option>Computer Science</option>
                       <option>Information Technology</option>
@@ -164,28 +162,14 @@ export default function SubmitPage() {
                     </select>
                   </div>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Company Name</label>
-                    <input
-                      type="text"
-                      name="company"
-                      value={form.company}
-                      onChange={handleChange}
-                      placeholder="e.g. Google India"
-                      required
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none"
-                    />
+                    <input type="text" name="company" value={form.company} onChange={handleChange} placeholder="e.g. Google India" required className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Batch Year</label>
-                    <select
-                      name="year"
-                      value={form.year}
-                      onChange={handleChange}
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none"
-                    >
+                    <select name="year" value={form.year} onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
                       <option>2025</option>
                       <option>2024</option>
                       <option>2023</option>
@@ -194,89 +178,49 @@ export default function SubmitPage() {
                 </div>
               </section>
 
-              {/* Step 2: Compensation */}
               <section className="space-y-6">
                 <div className="flex items-center gap-2">
                   <h3 className="text-xl font-bold tracking-tight">Compensation Breakdown</h3>
                   <div className="h-px flex-1 bg-white/5" />
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Base Salary (Annual LPA)</label>
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 font-bold">₹</span>
-                      <input
-                        type="number"
-                        name="base"
-                        value={form.base}
-                        onChange={handleChange}
-                        placeholder="0.00"
-                        required
-                        className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 pl-8 text-white font-medium focus:border-white/30 outline-none"
-                      />
+                      <input type="number" name="base" value={form.base} onChange={handleChange} placeholder="0.00" required className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 pl-8 text-white font-medium focus:border-white/30 outline-none" />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Joining Bonus</label>
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 font-bold">₹</span>
-                      <input
-                        type="number"
-                        name="bonus"
-                        value={form.bonus}
-                        onChange={handleChange}
-                        placeholder="0.00"
-                        className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 pl-8 text-white font-medium focus:border-white/30 outline-none"
-                      />
+                      <input type="number" name="bonus" value={form.bonus} onChange={handleChange} placeholder="0.00" className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 pl-8 text-white font-medium focus:border-white/30 outline-none" />
                     </div>
                   </div>
                 </div>
-
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Stocks / RSUs (Total Value)</label>
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 font-bold">₹</span>
-                    <input
-                      type="number"
-                      name="stocks"
-                      value={form.stocks}
-                      onChange={handleChange}
-                      placeholder="Total value over vesting period"
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 pl-8 text-white font-medium focus:border-white/30 outline-none"
-                    />
+                    <input type="number" name="stocks" value={form.stocks} onChange={handleChange} placeholder="Total value over vesting period" className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 pl-8 text-white font-medium focus:border-white/30 outline-none" />
                   </div>
-                  <p className="text-[10px] text-slate-600 font-medium uppercase tracking-widest pt-1">Typically vested over 4 years</p>
                 </div>
               </section>
 
-              {/* Step 3: Role & Verification */}
               <section className="space-y-6">
                 <div className="flex items-center gap-2">
                   <h3 className="text-xl font-bold tracking-tight">Offer Type & Verification</h3>
                   <div className="h-px flex-1 bg-white/5" />
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="md:col-span-2 space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Job Title</label>
-                    <input
-                      type="text"
-                      name="title"
-                      value={form.title}
-                      onChange={handleChange}
-                      placeholder="e.g. Software Development Engineer-I"
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none"
-                    />
+                    <input type="text" name="title" value={form.title} onChange={handleChange} placeholder="e.g. Software Development Engineer-I" className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Offer Type</label>
-                    <select
-                      name="offerType"
-                      value={form.offerType}
-                      onChange={handleChange}
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none"
-                    >
+                    <select name="offerType" value={form.offerType} onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
                       <option value="on-campus">On-Campus</option>
                       <option value="off-campus">Off-Campus</option>
                       <option value="ppo">PPO</option>
@@ -284,7 +228,6 @@ export default function SubmitPage() {
                   </div>
                 </div>
 
-                {/* Upload */}
                 <div className="space-y-4 p-8 border-2 border-dashed border-white/5 rounded-2xl bg-[#050505] flex flex-col items-center justify-center text-center">
                   <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-2">
                     <UploadCloud className="w-6 h-6 text-slate-500" />
@@ -295,23 +238,14 @@ export default function SubmitPage() {
                       Uploading gives your entry a Tier 1 Verified badge. We automatically redact your name and contact info.
                     </p>
                   </div>
-                  <button
-                    type="button"
-                    className="mt-4 px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-black uppercase tracking-widest rounded transition-colors"
-                  >
+                  <button type="button" className="mt-4 px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-black uppercase tracking-widest rounded transition-colors">
                     Browse PDF/JPG
                   </button>
                 </div>
 
-                {/* Consent */}
                 <div className="p-6 glass-card rounded-xl">
                   <label className="flex items-start gap-4 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      checked={agreed}
-                      onChange={(e) => setAgreed(e.target.checked)}
-                      className="mt-1 w-4 h-4 accent-white"
-                    />
+                    <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-1 w-4 h-4 accent-white" />
                     <span className="text-xs text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors">
                       I confirm that the data provided is accurate. I understand that OfferVault will anonymize this data and share it for public benefit.
                     </span>
@@ -319,22 +253,17 @@ export default function SubmitPage() {
                 </div>
               </section>
 
-              {/* Submit */}
               <div className="flex flex-col sm:flex-row items-center gap-6 pt-12">
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto px-12 py-5 bg-white text-black text-xs font-black uppercase tracking-[0.2em] rounded-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
-                >
+                <button type="submit" className="w-full sm:w-auto px-12 py-5 bg-white text-black text-xs font-black uppercase tracking-[0.2em] rounded-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
                   Finalize Submission
                   <Check className="w-5 h-5" />
                 </button>
-                <a href="/" className="text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-white transition-colors">
+                <Link href="/" className="text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-white transition-colors">
                   Discard Changes
-                </a>
+                </Link>
               </div>
             </div>
 
-            {/* Sidebar */}
             <aside className="lg:col-span-4 space-y-6">
               <div className="p-8 glass-card rounded-2xl">
                 <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-6">Submission Review</h4>
@@ -346,9 +275,7 @@ export default function SubmitPage() {
                   <div className="p-4 rounded-lg bg-black/40 border border-white/5 space-y-3">
                     <div className="flex justify-between">
                       <span className="text-xs text-slate-600">Estimated CTC</span>
-                      <span className="text-xs font-bold">
-                        {form.base ? `₹${form.base} LPA` : "-- LPA"}
-                      </span>
+                      <span className="text-xs font-bold">{form.base ? `₹${form.base} LPA` : "-- LPA"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-xs text-slate-600">Verification Level</span>
