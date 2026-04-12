@@ -57,7 +57,7 @@ export default function LeaderboardPage() {
     <main className="pt-44 pb-24 relative px-6 md:px-12 lg:px-24 bg-black min-h-screen">
       <div className="max-w-7xl mx-auto">
         
-        {/* Reusable Back Button Component */}
+        {/*  Reusable Back Button Component */}
         <BackButton href="/" label="Return to Hub" />
 
         <motion.header
