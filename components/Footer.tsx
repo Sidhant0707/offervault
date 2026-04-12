@@ -24,16 +24,16 @@ export default function Footer() {
             <ul className="space-y-4">
               <li><Link href="/search" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Database</Link></li>
               <li><Link href="/leaderboard" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Leaderboard</Link></li>
-              <li><Link href="/submit" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Verification</Link></li>
+              <li><Link href="/signup" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Verification</Link></li>
             </ul>
           </div>
 
           <div className="md:col-span-2">
             <h5 className="text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8">Legal</h5>
             <ul className="space-y-4">
-              <li><Link href="#" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Privacy</Link></li>
-              <li><Link href="#" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Terms</Link></li>
-              <li><Link href="#" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Security</Link></li>
+              <li><Link href="/privacy" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Privacy</Link></li>
+              <li><Link href="/terms" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Terms</Link></li>
+              <li><Link href="/security" className="text-slate-500 hover:text-white text-xs font-bold transition-colors">Security</Link></li>
             </ul>
           </div>
         </div>
@@ -43,9 +43,31 @@ export default function Footer() {
             &copy; 2024 OfferVault. Peer-to-Peer Data Consortium.
           </p>
           <div className="flex gap-8">
-            <Link href="#" className="text-slate-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">Twitter</Link>
-            <Link href="#" className="text-slate-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">LinkedIn</Link>
-            <Link href="#" className="text-slate-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">GitHub</Link>
+            {/* Added target="_blank" so they open in a new tab */}
+            <Link 
+              href="https://x.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+            >
+              Twitter
+            </Link>
+            <Link 
+              href="https://linkedin.com/in/sidhant07" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+            >
+              LinkedIn
+            </Link>
+            <Link 
+              href="https://github.com/Sidhant0707" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+            >
+              GitHub
+            </Link>
           </div>
         </div>
       </div>
