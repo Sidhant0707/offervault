@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Github, ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import { supabase } from "@/lib/supabase";
 
