@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="public/logo-white-Photoroom.png" width="120" alt="OfferVault Logo" />
+</p>
 
-## Getting Started
+# 🏛️ OfferVault
 
-First, run the development server:
+> **The Peer-to-Peer Data Consortium for Engineering Placements.**
 
-```bash
+OfferVault is a high-trust analytics platform built to solve the information asymmetry in Indian engineering placements. By utilizing **Institutional Email Verification (.edu/.ac.in)**, the platform ensures that 100% of the crowdsourced compensation data is verified by university affiliation while maintaining total user anonymity.
+
+[**Live Platform →**](https://offervault.vercel.app/)
+
+---
+
+## 🛡️ Trust & Security Architecture
+
+Unlike generic glassdoor-style sites, OfferVault is built for accuracy and integrity:
+
+* **Institutional Guardrails:** Custom domain validation logic that restricts submissions to verified university email addresses.
+* **Anonymity Layer:** Multi-layer hashing to protect student identities while allowing for verified participation.
+* **Row-Level Security (RLS):** Sophisticated Supabase RLS policies ensuring users can only manage their own data while the global database remains immutable.
+* **CTC Benchmarking:** Automated logic to break down complex offer letters into Base Pay, Joining Bonus, and ESOPs for true "In-Hand" transparency.
+
+## ⚙️ Technical Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS + Framer Motion
+- **Database:** Supabase (PostgreSQL)
+- **Authentication:** Supabase Auth (OTP & OAuth)
+- **Infrastructure:** Vercel Edge Network
+- **Icons/UI:** Lucide React + custom geometric branding
+
+## 🚀 Key Features
+
+* **Verified Submission:** Strict regex filtering for institutional email domains.
+* **Leaderboard:** Ranking companies based on verified compensation benchmarks.
+* **Advanced Search:** Filter by Role, Company, and Batch to find relevant market data.
+* **Self-Service Dashboard:** Secure portal for students to manage or delete their verified submissions.
+
+## 🛠️ Development
+
+1. **Clone the repo:**
+   ```bash
+   git clone [https://github.com/Sidhant0707/offervault.git](https://github.com/Sidhant0707/offervault.git)
+Install dependencies:
+
+Bash
+npm install
+Environment Variables:
+Create a .env.local file and add your Supabase credentials:
+
+Code snippet
+NEXT_PUBLIC_SUPABASE_URL=your_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
+Run local server:
+
+Bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<p align="center">
+Built by <b>Sidhant Kumar</b>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<a href="https://www.linkedin.com/in/sidhant07">LinkedIn</a> • <a href="https://github.com/Sidhant0707">GitHub</a>
+</p>
