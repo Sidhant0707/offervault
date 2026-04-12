@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Database } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -7,9 +7,14 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-12 gap-16 mb-24">
           <div className="md:col-span-5">
-            <Link href="/" className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                <Database className="text-black w-4 h-4" />
+            <Link href="/" className="flex items-center gap-3 mb-8 group">
+              <div className="w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-105">
+                <Image 
+                  src="/logo-white-Photoroom.png" 
+                  alt="OfferVault Logo" 
+                  width={40} 
+                  height={40}
+                />
               </div>
               <span className="text-xl font-bold tracking-tight text-white">OfferVault</span>
             </Link>
@@ -43,7 +48,6 @@ export default function Footer() {
             &copy; 2024 OfferVault. Peer-to-Peer Data Consortium.
           </p>
           <div className="flex gap-8">
-            {/* Added target="_blank" so they open in a new tab */}
             <Link 
               href="https://x.com" 
               target="_blank" 
