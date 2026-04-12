@@ -1,6 +1,7 @@
 <p align="center">
   <img src="public/logo-white-Photoroom.png" width="120" alt="OfferVault Logo" />
 </p>
+![CI Status](https://github.com/Sidhant0707/offervault/actions/workflows/ci.yml/badge.svg)
 
 # 🏛️ OfferVault
 
