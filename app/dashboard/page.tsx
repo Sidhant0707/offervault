@@ -22,14 +22,6 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
-const MOCK_USER = {
-  name: "Ayush Kumar",
-  email: "ayush.k@vit.edu",
-  trustScore: 85,
-  status: "Tier 2 Verified",
-  joinDate: "Oct 2024"
-};
-
 const MY_SUBMISSIONS = [
   { college: "VIT Vellore", branch: "Computer Science", year: "2024", company: "Google India", ctc: "32.5", status: "Verified", category: "Full-Time", isPending: false },
   { college: "VIT Vellore", branch: "Computer Science", year: "2024", company: "Amazon", ctc: "28.0", status: "Audit Pending", category: "Internship", isPending: true },
@@ -40,12 +32,31 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"submissions" | "saved" | "settings">("submissions");
   const [authChecked, setAuthChecked] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    trustScore: 85,
+    status: "Evaluating..."
+  });
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) {
         router.replace("/login");
       } else {
+        const userEmail = data.user.email || "";
+        const namePrefix = userEmail.split('@')[0].replace('.', ' ');
+        const displayName = data.user.user_metadata?.full_name || namePrefix.charAt(0).toUpperCase() + namePrefix.slice(1);
+        const verificationStatus = userEmail.endsWith('.edu') || userEmail.endsWith('.ac.in') 
+          ? "Institution Verified" 
+          : "Unverified Domain";
+
+        setUserData({
+          name: displayName,
+          email: userEmail,
+          trustScore: verificationStatus === "Institution Verified" ? 95 : 40,
+          status: verificationStatus
+        });
         setAuthChecked(true);
       }
     });
@@ -112,19 +123,19 @@ export default function DashboardPage() {
               <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/20">
                 <User className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-2xl font-bold tracking-tight text-white mb-1">{MOCK_USER.name}</h2>
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6">{MOCK_USER.email}</p>
+              <h2 className="text-2xl font-bold tracking-tight text-white mb-1">{userData.name}</h2>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6">{userData.email}</p>
               
               <div className="pt-6 border-t border-white/10 space-y-4">
                 <div>
                   <div className="flex justify-between items-end mb-2">
                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500">Trust Score</span>
-                    <span className="text-sm font-bold text-white">{MOCK_USER.trustScore}%</span>
+                    <span className="text-sm font-bold text-white">{userData.trustScore}%</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: 0 }}
-                      animate={{ width: `${MOCK_USER.trustScore}%` }}
+                      animate={{ width: `${userData.trustScore}%` }}
                       transition={{ duration: 1, delay: 0.5 }}
                       className="h-full bg-white rounded-full"
                     />
@@ -133,7 +144,7 @@ export default function DashboardPage() {
                 
                 <div className="flex items-center gap-2 px-3 py-2 bg-white/5 rounded-lg border border-white/10">
                   <ShieldCheck className="w-4 h-4 text-slate-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">{MOCK_USER.status}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">{userData.status}</span>
                 </div>
               </div>
             </motion.div>
@@ -233,11 +244,11 @@ export default function DashboardPage() {
                     <h2 className="text-2xl font-bold tracking-tight text-white">Saved Profiles</h2>
                   </div>
                   <div className="p-16 border border-white/5 rounded-2xl bg-[#050505] text-center">
-                    <Bookmark className="w-8 h-8 text-slate-600 mx-auto mb-4" />
-                    <h3 className="text-white font-bold mb-2">No profiles saved yet.</h3>
-                    <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                      Explore the leaderboard or database to bookmark institutions and track their placement trends.
-                    </p>
+                        <Bookmark className="w-8 h-8 text-slate-600 mx-auto mb-4" />
+                        <h3 className="text-white font-bold mb-2">No profiles saved yet.</h3>
+                        <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                          Explore the leaderboard or database to bookmark institutions and track their placement trends.
+                        </p>
                   </div>
                 </div>
               )}
