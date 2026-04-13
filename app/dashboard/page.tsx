@@ -39,6 +39,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"submissions" | "saved" | "settings">("submissions");
   const [authChecked, setAuthChecked] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -53,6 +54,33 @@ export default function DashboardPage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.push("/");
+  };
+
+  const handlePurgeAccount = async () => {
+    const confirmed = window.confirm(
+      "Are you absolutely sure? This will permanently delete your account and all placement data. This cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+
+    try {
+      const res = await fetch("/api/user/delete", {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete account");
+
+      await supabase.auth.signOut();
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Purge error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (!authChecked) {
@@ -232,8 +260,13 @@ export default function DashboardPage() {
                     </div>
                     <div>
                       <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-4">Account Danger Zone</h4>
-                      <button type="button" className="px-6 py-3 border border-red-500/20 text-red-500 hover:bg-red-500/10 text-[10px] font-black uppercase tracking-widest rounded-lg transition-colors">
-                        Purge Account & Data
+                      <button 
+                        type="button" 
+                        onClick={handlePurgeAccount}
+                        disabled={isDeleting}
+                        className="px-6 py-3 border border-red-500/20 text-red-500 hover:bg-red-500/10 text-[10px] font-black uppercase tracking-widest rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isDeleting ? "PURGING..." : "Purge Account & Data"}
                       </button>
                     </div>
                   </div>

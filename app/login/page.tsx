@@ -33,7 +33,7 @@ export default function LoginPage() {
       router.refresh();
     } catch (err: any) {
       console.error("Login error:", err.message);
-      setError("Invalid credentials or unverified email. Please try again.");
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
