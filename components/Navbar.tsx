@@ -34,10 +34,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-105">
-            <Image 
-              src="/logo-white-Photoroom.png" 
-              alt="OfferVault Logo" 
-              width={40} 
+            <Image
+              src="/logo-white-Photoroom.png"
+              alt="OfferVault Logo"
+              width={40}
               height={40}
               priority
             />
@@ -48,12 +48,14 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden md:flex items-center gap-10">
-          <Link href="/search" className={linkClass("/compare")}>Explore</Link>
+          <Link href="/search" className={linkClass("/search")}>Explore</Link>
+          <Link href="/compare" className={linkClass("/compare")}>Compare</Link>
           <Link href="/leaderboard" className={linkClass("/leaderboard")}>Leaderboard</Link>
           {user ? (
             <>
               <Link href="/dashboard" className={linkClass("/dashboard")}>Dashboard</Link>
               <button
+                type="button"
                 onClick={handleSignOut}
                 className="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors"
               >
