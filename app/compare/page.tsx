@@ -16,8 +16,28 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
+// Types
+interface InstitutionMeta {
+  nirf: string;
+  type: string;
+  location: string;
+}
+
+interface Metrics {
+  avgCtc: string | number;
+  highestCtc: string | number;
+  totalOffers: number;
+  trustScore: number;
+}
+
+interface Offer {
+  total_ctc: number;
+  status: string;
+  is_verified: boolean;
+}
+
 // Static Metadata (Immutable facts not stored in the offers table)
-const INSTITUTION_META: Record<string, any> = {
+const INSTITUTION_META: Record<string, InstitutionMeta> = {
   "VIT Vellore": { nirf: "#19", type: "Private", location: "Tamil Nadu" },
   "BITS Pilani": { nirf: "#27", type: "Private", location: "Rajasthan" },
   "NIT Trichy": { nirf: "#9", type: "Public (NIT)", location: "Tamil Nadu" },
@@ -34,11 +54,11 @@ export default function ComparePage() {
   const [collegeB, setCollegeB] = useState(AVAILABLE_COLLEGES[1]); // BITS Pilani
 
   const [isLoading, setIsLoading] = useState(true);
-  const [metricsA, setMetricsA] = useState<any>(null);
-  const [metricsB, setMetricsB] = useState<any>(null);
+  const [metricsA, setMetricsA] = useState<Metrics | null>(null);
+  const [metricsB, setMetricsB] = useState<Metrics | null>(null);
 
   // Aggregation Engine
-  const calculateMetrics = (data: any[]) => {
+  const calculateMetrics = (data: Offer[]) => {
     if (!data || data.length === 0) return { avgCtc: 0, highestCtc: 0, totalOffers: 0, trustScore: 0 };
     
     let totalCTC = 0;
@@ -46,7 +66,7 @@ export default function ComparePage() {
     let verifiedCount = 0;
 
     data.forEach((offer) => {
-      const ctc = parseFloat(offer.ctc || "0");
+      const ctc = parseFloat(String(offer.total_ctc || "0"));
       totalCTC += ctc;
       if (ctc > highest) highest = ctc;
       if (offer.status === "Verified" || offer.is_verified) verifiedCount++;
@@ -83,7 +103,8 @@ export default function ComparePage() {
   }, [collegeA, collegeB]);
 
   // Helper to determine the "Winner" styling
-  const getWinnerClass = (valA: number, valB: number, isA: boolean) => {
+  const getWinnerClass = (valA: number | undefined, valB: number | undefined, isA: boolean) => {
+    if (valA === undefined || valB === undefined) return "text-white";
     if (valA === valB) return "text-white";
     if (isA) return valA > valB ? "text-white font-extrabold" : "text-slate-500";
     return valB > valA ? "text-white font-extrabold" : "text-slate-500";
@@ -112,6 +133,7 @@ export default function ComparePage() {
             <div className="w-full relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-500">Side A</span>
               <select 
+                title="Select college for Side A"
                 value={collegeA} 
                 onChange={(e) => setCollegeA(e.target.value)}
                 className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-4 pl-20 pr-4 text-sm text-white font-bold appearance-none outline-none focus:border-white/30 cursor-pointer"
@@ -127,6 +149,7 @@ export default function ComparePage() {
             <div className="w-full relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-500">Side B</span>
               <select 
+                title="Select college for Side B"
                 value={collegeB} 
                 onChange={(e) => setCollegeB(e.target.value)}
                 className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-4 pl-20 pr-4 text-sm text-white font-bold appearance-none outline-none focus:border-white/30 cursor-pointer"
