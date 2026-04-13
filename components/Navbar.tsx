@@ -48,7 +48,7 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden md:flex items-center gap-10">
-          <Link href="/search" className={linkClass("/search")}>Explore</Link>
+          <Link href="/search" className={linkClass("/compare")}>Explore</Link>
           <Link href="/leaderboard" className={linkClass("/leaderboard")}>Leaderboard</Link>
           {user ? (
             <>
