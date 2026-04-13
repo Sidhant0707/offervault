@@ -1,6 +1,7 @@
 <p align="center">
   <img src="public/logo-white-Photoroom.png" width="120" alt="OfferVault Logo" />
 </p>
+
 ![CI Status](https://github.com/Sidhant0707/offervault/actions/workflows/ci.yml/badge.svg)
 
 # 🏛️ OfferVault
@@ -15,51 +16,58 @@ OfferVault is a high-trust analytics platform built to solve the information asy
 
 ## 🛡️ Trust & Security Architecture
 
-Unlike generic glassdoor-style sites, OfferVault is built for accuracy and integrity:
-
-* **Institutional Guardrails:** Custom domain validation logic that restricts submissions to verified university email addresses.
-* **Anonymity Layer:** Multi-layer hashing to protect student identities while allowing for verified participation.
-* **Row-Level Security (RLS):** Sophisticated Supabase RLS policies ensuring users can only manage their own data while the global database remains immutable.
-* **CTC Benchmarking:** Automated logic to break down complex offer letters into Base Pay, Joining Bonus, and ESOPs for true "In-Hand" transparency.
+- **Institutional Guardrails:** Custom domain validation logic that restricts submissions to verified university email addresses.
+- **Anonymity Layer:** Multi-layer hashing to protect student identities while allowing for verified participation.
+- **Row-Level Security (RLS):** Supabase RLS policies ensuring users can only manage their own data.
+- **CTC Benchmarking:** Automated logic to break down offer letters into Base Pay, Joining Bonus, and ESOPs.
 
 ## ⚙️ Technical Stack
 
-- **Framework:** Next.js 15 (App Router)
-- **Styling:** Tailwind CSS + Framer Motion
-- **Database:** Supabase (PostgreSQL)
-- **Authentication:** Supabase Auth (OTP & OAuth)
-- **Infrastructure:** Vercel Edge Network
-- **Icons/UI:** Lucide React + custom geometric branding
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| Styling | Tailwind CSS + Framer Motion |
+| Database | Supabase (PostgreSQL) |
+| Auth | Supabase Auth |
+| Deployment | Vercel Edge Network |
+| Icons | Lucide React |
 
 ## 🚀 Key Features
 
-* **Verified Submission:** Strict regex filtering for institutional email domains.
-* **Leaderboard:** Ranking companies based on verified compensation benchmarks.
-* **Advanced Search:** Filter by Role, Company, and Batch to find relevant market data.
-* **Self-Service Dashboard:** Secure portal for students to manage or delete their verified submissions.
+- **Verified Submission:** Strict regex filtering for institutional email domains.
+- **Leaderboard:** Ranking companies based on verified compensation benchmarks.
+- **Advanced Search:** Filter by Role, Company, and Batch.
+- **Dashboard:** Secure portal for students to manage their submissions.
+- **Compare Tool:** Side-by-side institutional placement analysis.
 
 ## 🛠️ Development
 
-1. **Clone the repo:**
-   ```bash
-   git clone [https://github.com/Sidhant0707/offervault.git](https://github.com/Sidhant0707/offervault.git)
-Install dependencies:
+1. Clone the repo:
+```bash
+git clone https://github.com/Sidhant0707/offervault.git
+```
 
-Bash
+2. Install dependencies:
+```bash
 npm install
-Environment Variables:
-Create a .env.local file and add your Supabase credentials:
+```
 
-Code snippet
+3. Create `.env.local`:
+
+
 NEXT_PUBLIC_SUPABASE_URL=your_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
-Run local server:
 
-Bash
+
+4.  Run local server:
+```bash
 npm run dev
+```
+
+---
+
 <p align="center">
-Built by <b>Sidhant Kumar</b>
-
-
+Built by <b>Sidhant Kumar</b><br/>
 <a href="https://www.linkedin.com/in/sidhant07">LinkedIn</a> • <a href="https://github.com/Sidhant0707">GitHub</a>
 </p>
+
