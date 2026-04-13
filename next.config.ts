@@ -1,4 +1,5 @@
-/** @type {import('next').NextConfig} */
+import type { NextConfig } from "next";
+
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -6,6 +7,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-};
+} as NextConfig; // Move the type cast here
 
 export default nextConfig;
