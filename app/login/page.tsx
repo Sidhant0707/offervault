@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Loader2, AlertCircle } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import { supabase } from "@/lib/supabase";
+import styles from "./page.module.css";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,9 +32,15 @@ export default function LoginPage() {
 
       router.push("/dashboard");
       router.refresh();
-    } catch (err: any) {
-      console.error("Login error:", err.message);
-      setError(err.message);
+    } catch (err) {
+      // TypeScript Fix: Type Narrowing instead of 'any'
+      if (err instanceof Error) {
+        console.error("Login error:", err.message);
+        setError(err.message);
+      } else {
+        console.error("An unexpected error occurred:", err);
+        setError("An unexpected error occurred during login.");
+      }
     } finally {
       setIsLoading(false);
     }

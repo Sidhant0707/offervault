@@ -53,12 +53,18 @@ export default function SubmitPage() {
     e.preventDefault();
     if (!agreed) return alert("Please agree to the privacy protocol.");
 
+    // 1. Grab the current logged-in user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return alert("You must be logged in to submit.");
+
     const totalCtc =
       (parseFloat(form.base) || 0) +
       (parseFloat(form.bonus) || 0) / 10 +
       (parseFloat(form.stocks) || 0) / 4;
 
+    // 2. Add user_id to the insert payload
     const { error } = await supabase.from("offers").insert({
+      user_id: user.id, // <--- ADD THIS LINE
       college: form.college,
       branch: form.branch,
       company: form.company,
@@ -66,8 +72,8 @@ export default function SubmitPage() {
       base_salary: parseFloat(form.base) || 0,
       joining_bonus: parseFloat(form.bonus) || 0,
       stocks: parseFloat(form.stocks) || 0,
-      total_ctc: parseFloat(totalCtc.toFixed(1)),
-      job_title: form.title,
+      salary: parseFloat(totalCtc.toFixed(1)), 
+      role: form.title,                        
       offer_type: form.offerType,
       status: "Pending Audit",
       is_pending: true,
@@ -152,7 +158,7 @@ export default function SubmitPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Academic Branch</label>
-                    <select name="branch" value={form.branch} onChange={handleChange} required className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
+                    <select name="branch" value={form.branch} onChange={handleChange} required title="Select your academic branch" className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
                       <option value="">Select Branch</option>
                       <option>Computer Science</option>
                       <option>Information Technology</option>
@@ -169,7 +175,7 @@ export default function SubmitPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Batch Year</label>
-                    <select name="year" value={form.year} onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
+                    <select name="year" value={form.year} onChange={handleChange} title="Select Batch Year" className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
                       <option>2025</option>
                       <option>2024</option>
                       <option>2023</option>
@@ -220,7 +226,7 @@ export default function SubmitPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Offer Type</label>
-                    <select name="offerType" value={form.offerType} onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
+                    <select name="offerType" value={form.offerType} onChange={handleChange} title="Select offer type" className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg p-4 text-white font-medium focus:border-white/30 outline-none appearance-none">
                       <option value="on-campus">On-Campus</option>
                       <option value="off-campus">Off-Campus</option>
                       <option value="ppo">PPO</option>

@@ -59,9 +59,13 @@ export default function SignupPage() {
       if (error) throw error;
 
       setIsSubmitted(true);
-    } catch (err: any) {
-      console.error("Signup error:", err.message);
-      setError(err.message || "Failed to initialize account. Please try again.");
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error("Signup error:", err.message);
+        setError(err.message || "Failed to initialize account. Please try again.");
+      } else {
+        setError("An unexpected error occurred during signup.");
+      }
     } finally {
       setIsLoading(false);
     }
